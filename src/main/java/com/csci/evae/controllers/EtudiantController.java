@@ -1,8 +1,8 @@
-package com.example.backend.controllers;
+package com.csci.evae.controllers;
 
-import com.example.backend.entity.Etudiant;
-import com.example.backend.services.EtudiantServiceInterface;
-import com.example.backend.utils.Constants;
+import com.csci.evae.entity.Etudiant;
+import com.csci.evae.services.EtudiantServiceInterface;
+import com.csci.evae.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(Constants.API_URL+"/etudiants")
+@RequestMapping(Constants.API_URL+"etudiants")
 
 public class EtudiantController {
 
@@ -25,12 +25,6 @@ public class EtudiantController {
         return new ResponseEntity<>(savedEtudiant, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Etudiant> getEtudiantById(@PathVariable Long id) {
-        Optional<Etudiant> etudiant = etudiantService.getEtudiantById(id);
-        return etudiant.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
 
     @GetMapping
     public ResponseEntity<List<Etudiant>> getAllEtudiants() {
@@ -38,9 +32,15 @@ public class EtudiantController {
         return new ResponseEntity<>(etudiants, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEtudiant(@PathVariable Long id) {
-        etudiantService.deleteEtudiant(id);
+    @DeleteMapping("/{noEtudiantNat}")
+    public ResponseEntity<Void> deleteEtudiant(@PathVariable String noEtudiantNat) {
+        etudiantService.deleteEtudiant(noEtudiantNat);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/{noEtudiantNat}")
+    public ResponseEntity<Etudiant> updateEtudiant(@PathVariable String noEtudiantNat, @RequestBody Etudiant etudiantDetails) {
+            Etudiant updatedEtudiant = etudiantService.updateEtudiant(noEtudiantNat, etudiantDetails);
+            return ResponseEntity.ok(updatedEtudiant);
     }
 }

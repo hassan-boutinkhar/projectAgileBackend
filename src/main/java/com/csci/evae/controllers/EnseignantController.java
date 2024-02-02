@@ -1,8 +1,8 @@
-package com.example.backend.controllers;
+package com.csci.evae.controllers;
 
-import com.example.backend.entity.Enseignant;
-import com.example.backend.services.EnseignantServiceInterface;
-import com.example.backend.utils.Constants;
+import com.csci.evae.entity.Enseignant;
+import com.csci.evae.services.EnseignantServiceInterface;
+import com.csci.evae.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(Constants.API_URL+"/enseignants")
+@RequestMapping(Constants.API_URL+"enseignants")
 public class EnseignantController {
 
     @Autowired
@@ -42,5 +42,11 @@ public class EnseignantController {
     public ResponseEntity<Void> deleteEnseignant(@PathVariable Long id) {
         enseignantService.deleteEnseignant(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Enseignant> updateEnseignant(@PathVariable Long id, @RequestBody Enseignant enseignantDetails) {
+        Enseignant updatedEnseignant = enseignantService.updateEnseignant(id, enseignantDetails);
+        return ResponseEntity.ok(updatedEnseignant);
     }
 }
