@@ -44,6 +44,4 @@ public class Formation {
     @Temporal(TemporalType.DATE)
     private Date finHabilitation;
 
-    // Constructors, getters, setters, and other methods as needed
-
 }

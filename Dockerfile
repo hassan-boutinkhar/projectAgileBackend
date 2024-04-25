@@ -7,7 +7,7 @@ WORKDIR /app
 COPY build/libs/*.jar app.jar
 
 # Exposer le port sur lequel l'application s'exécute
-EXPOSE 8080
+EXPOSE 8082
 
 # Commande pour exécuter l'application Spring Boot lorsque le conteneur démarre
 CMD ["java", "-jar", "app.jar"]

@@ -12,11 +12,23 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implémentation du service pour la gestion des Etudiants.
+ */
+
 @Service
 public class EtudiantServiceImpl implements EtudiantServiceInterface {
 
     @Autowired
     private EtudiantRepository etudiantRepository;
+
+    /**
+     * Ajoute un nouvel Etudiant.
+     *
+     * @param etudiant L'objet Etudiant à ajouter.
+     * @return L'objet Etudiant ajouté.
+     * @throws DuplicateEntityException Si un Etudiant avec le même nom, prénom et date de naissance existe déjà.
+     */
 
     @Override
     public Etudiant saveEtudiant(Etudiant etudiant) {
@@ -25,10 +37,26 @@ public class EtudiantServiceImpl implements EtudiantServiceInterface {
     }
 
 
+    /**
+     * Récupère tous les étudiants.
+     *
+     * @return une liste de tous les étudiants
+     */
+
     @Override
     public List<Etudiant> getAllEtudiants() {
         return etudiantRepository.findAll();
     }
+
+
+    /**
+     * Met à jour les détails d'un étudiant.
+     *
+     * @param noEtudiantNat   le numéro étudiant national de l'étudiant à mettre à jour
+     * @param etudiantDetails les nouveaux détails de l'étudiant
+     * @return l'étudiant mis à jour
+     * @throws EntityNotFoundException si aucun étudiant n'est trouvé avec le numéro étudiant national spécifié
+     */
 
     @Override
     public Etudiant updateEtudiant(String noEtudiantNat, Etudiant etudiantDetails) {
@@ -47,6 +75,13 @@ public class EtudiantServiceImpl implements EtudiantServiceInterface {
     }
 
 
+    /**
+     * Supprime un étudiant.
+     *
+     * @param noEtudiantNat le numéro étudiant national de l'étudiant à supprimer
+     * @throws EntityNotFoundException si aucun étudiant n'est trouvé avec le numéro étudiant national spécifié
+     */
+
     @Override
     public void deleteEtudiant(String noEtudiantNat) {
         Optional<Etudiant> existingEtudiant = etudiantRepository.findEtudiantByNoEtudiantNat(noEtudiantNat);
@@ -55,6 +90,15 @@ public class EtudiantServiceImpl implements EtudiantServiceInterface {
         }
         etudiantRepository.deleteEtudiantByNoEtudiantNat(noEtudiantNat);
     }
+
+
+    /**
+     * Vérifie s'il existe déjà un étudiant avec le même nom, prénom et date de naissance.
+     * Si c'est le cas, lance une exception.
+     *
+     * @param etudiant l'étudiant à vérifier
+     * @throws DuplicateEntityException si un étudiant avec les mêmes détails existe déjà
+     */
 
     private void checkExistingEtudiant(Etudiant etudiant) {
         Optional<Etudiant> existingEtudiant = etudiantRepository.findByNomAndPrenomAndDateNaissance(
